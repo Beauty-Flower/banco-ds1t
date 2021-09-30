@@ -3,20 +3,45 @@ package br.senai.sp.jandira.model;
 public class Conta {
 	
 	public String tipo;
-	public String numero;
+	private String numero;
 	public String numeroAgencia;
 	public String titular;
-	public double saldo;
+	private double saldo;
+	
+	public Conta(String numeroConta) {
+		numero = numeroConta;
+	}
 	
 	public void depositar(double valorDeposito) {
-		saldo += valorDeposito;
+		if(valorDeposito <= 0) {
+			System.out.println("Valor inválido!");
+		} else {
+			saldo += valorDeposito;
+		}
+		
 	}
 	
-	public void sacar(double valorSaque) {
-		saldo -= valorSaque;
+	public boolean sacar(double valorSaque) {
+		if(valorSaque <= 0) {
+			System.out.println("Valor inválido!");
+			return false;
+		} else if(valorSaque > saldo) {
+			System.out.println("Saldo insuficiente!");
+			return false;
+		} else {
+			saldo -= valorSaque;
+			return true;
+		}
+		
 	}
 	
-	public void transferir() {
+	public void transferir(Conta contaDestino, double valorTransferencia) {
+		boolean resultado = sacar(valorTransferencia);
+		if(resultado) {
+			contaDestino.depositar(valorTransferencia);
+		} else {
+			System.out.println("Não foi possível realizar a transferência!");
+		}
 		
 	}
 	
